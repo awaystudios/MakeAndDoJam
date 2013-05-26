@@ -57,6 +57,7 @@ package
 	import flash.display.*;
 	import flash.events.*;
 	import flash.filters.*;
+	import flash.geom.*;
 	import flash.text.*;
 	import flash.ui.*;
 	import flash.utils.*;
@@ -86,6 +87,9 @@ package
 		
 		[Embed(source="/../embeds/object_coin.png")]
 		private var Coin:Class;
+		
+		[Embed(source="/../embeds/coin_text_2.png")]
+		private var CoinText:Class;
 		
 		[Embed(source="/../embeds/object_pottery_2.png")]
 		private var Pottery:Class;
@@ -148,6 +152,7 @@ package
 		private var walkAcceleration:Number = 0;
 		private var strafeAcceleration:Number = 0;
 		private var potterySprite2:Sprite3D;
+		private var coinTextSprite:Sprite3D;
 		
 		/**
 		 * Constructor
@@ -278,8 +283,20 @@ package
 			coinSprite = new Sprite3D(coinTexture, 100, 100);
 			coinSprite.x = 400;
 			coinSprite.z = 400;
+			coinSprite.mouseEnabled = true;
 			coinSprite.addEventListener(MouseEvent3D.MOUSE_UP, onCoinInfo);
 			scene.addChild(coinSprite);
+			
+			//create coin text
+			var coinTextTexture:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(CoinText));
+			coinTextTexture.alphaThreshold = 0.5;
+			
+			coinTextSprite = new Sprite3D(coinTextTexture, 400, 300);
+			coinTextSprite.x = 400;
+			coinTextSprite.y = 500;
+			coinTextSprite.z = 400;
+			coinTextSprite.visible = false;
+			scene.addChild(coinTextSprite);
 			
 			//create person billboard
 			var personTexture:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(Person));
@@ -325,8 +342,14 @@ package
 		
 		protected function onCoinInfo(event:MouseEvent3D):void
 		{
+			trace("test");
 			// TODO Auto-generated method stub
-			
+			if (coinTextSprite.visible) {
+				coinTextSprite.visible = false;				
+			} else {
+			coinTextSprite.visible = true;
+				
+			}
 		}
 		
 		protected function onPotteryInfo(event:MouseEvent3D):void
